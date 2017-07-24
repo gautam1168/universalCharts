@@ -7,12 +7,14 @@ import { RepoListComponent } from './github/repo-list/repo-list.component';
 import { RepoDetailComponent } from './github/repo-detail/repo-detail.component';
 import { ContactComponent } from './contact/contact.component';
 import { BarChartView } from './canvasjs/barchartView.component';
+import { NvD3BarChartView } from './nvd3/nvd3BarChartView.component';
 
 export const rootRouterConfig: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
   { path: 'canvasjs', component: BarChartView },
+  { path: 'nvd3', component: NvD3BarChartView },
   { path: 'github', component: RepoBrowserComponent,
     children: [
       { path: '', component: RepoListComponent },

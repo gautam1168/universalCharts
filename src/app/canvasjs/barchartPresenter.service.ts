@@ -9,6 +9,7 @@ class Series {
 
 export class BarChartPresenter {
 	view: any;
+	viewType: string;
 	chart: any;
 	options: any = {
 		type: 'bar',
@@ -47,9 +48,10 @@ export class BarChartPresenter {
 		}
 	};
 
-	init(view: any){
-		this.render(view);
+	init(view: any, viewType: string){
+		this.viewType = viewType;
 		this.view = view;
+		this.requestRender(view);
 	}
 
 	setDefault(){
@@ -70,12 +72,13 @@ export class BarChartPresenter {
 			'rgba(153, 102, 255, 1)',
 			'rgba(255, 159, 64, 1)'
 		]
-		this.render(this.view)
+		this.requestRender(this.view)
 	}
 
 	setDataTo(numData){
+
 		this.initializeLargeData(numData);
-		this.render(this.view);
+		this.requestRender(this.view);
 	}
 
 	initializeLargeData(numData){
@@ -87,13 +90,25 @@ export class BarChartPresenter {
 		console.log("Data created")
 	}
 
-	render(view: any){
-		let ctx = view.ctx;
-		if (this.chart != undefined){
-			this.chart.destroy()
-			view.removeChartCanvas = true;
+	requestRender(view: any){
+		let options;
+		if(this.viewType == "nvd3"){
+			options = this.setNvd3Options()
 		}
+		else{
+			options = this.options;
+		}
+		view.renderChart(options)
+	}
 
-		this.chart = new (<any>window).Chart(ctx, this.options);
+	setNvd3Options(){
+		let config = {
+			key: this.options.data.datasets[0].label,
+			values: []
+		}
+		config.values = this.options.data.datasets[0].data.map(datapoint=>{
+			return {label: datapoint, value: datapoint}
+		})
+		return [config]
 	}
 }

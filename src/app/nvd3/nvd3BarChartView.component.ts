@@ -1,10 +1,9 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
-import { ContextGetter } from './contextGetter.directive';
-import { BarChartPresenter } from './barchartPresenter.service';
-
+import { BarChartPresenter } from '../canvasjs/barchartPresenter.service';
+import { ElementGetter } from './elemGetter.directive';
 @Component({
 	selector: 'bar-chart',
-	template: `<div style="display:block">
+	template: `<div style="display:block" id="chart1">
 				<ul>
 					<button class="button" (click)="presenter.setDefault()">default</button>
 					<button class="button" (click)="presenter.setDataTo(10)">10</button>
@@ -15,11 +14,11 @@ import { BarChartPresenter } from './barchartPresenter.service';
 					<div>{{status}}</div>
 				</ul>
 
-				<canvas contextGetter width="400" height="400">
-			    </canvas>
+				<svg elementGetter width="400" height="400">
+			    </svg>
 			   </div>`,
 	styles: [
-		`canvas{
+		`svg{
 			border: solid 2px;
 			width: 400px;
 			height: 400px;
@@ -28,13 +27,14 @@ import { BarChartPresenter } from './barchartPresenter.service';
 	],
 	providers: [ BarChartPresenter ]
 })
-export class BarChartView implements AfterViewInit{
-	@ViewChild(ContextGetter)
-	private cgetter: ContextGetter;
+export class NvD3BarChartView implements AfterViewInit{
 
-	private ctx:any;
+	@ViewChild(ElementGetter)
+	private sgetter:ElementGetter;
+
 	private chart:any;
 	public status:string;
+	private svgelem: any;
 
 	constructor(private presenter: BarChartPresenter){}
 
@@ -43,15 +43,26 @@ export class BarChartView implements AfterViewInit{
 	}
 
 	ngAfterViewInit(){
-		this.ctx = this.cgetter.getContext();
-		this.presenter.init(this, "canvasjs");
+		this.svgelem = this.sgetter.getElement();
+		this.presenter.init(this, "nvd3");
 	}
 
 	renderChart(options){
-		if (this.chart != undefined){
-			this.chart.destroy()
-		}
+		let nv = (<any>window).nv
+		let d3 = (<any>window).d3
+		let svgelem = this.svgelem;
 
-		this.chart = new (<any>window).Chart(this.ctx, options);
+		this.chart = nv.addGraph(function(){
+			let chart = nv.models.discreteBarChart()
+					.x(d=>{ return d.label })
+					.y(d=>{ return d.value })
+					.staggerLabels(true)
+					.duration(250);
+			d3.select(svgelem)
+				.datum(options)
+				.call(chart)
+			nv.utils.windowResize(chart.update);
+			return chart
+		})
 	}
 }

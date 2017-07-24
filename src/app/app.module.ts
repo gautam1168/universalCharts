@@ -15,8 +15,10 @@ import { RepoDetailComponent } from './github/repo-detail/repo-detail.component'
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { ContactComponent } from './contact/contact.component';
 import { BarChartView } from './canvasjs/barchartView.component';
+import { NvD3BarChartView } from './nvd3/nvd3BarChartView.component';
 import { ContextGetter } from './canvasjs/contextGetter.directive';
 import { ChartsModule } from 'ng2-charts';
+import { ElementGetter } from './nvd3/elemGetter.directive';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { ChartsModule } from 'ng2-charts';
     HomeComponent,
     ContactComponent,
 	BarChartView,
-	ContextGetter
+	ContextGetter,
+	NvD3BarChartView,
+	ElementGetter
   ],
   imports: [
     BrowserModule,
