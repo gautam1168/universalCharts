@@ -14,6 +14,9 @@ import { RepoListComponent } from './github/repo-list/repo-list.component';
 import { RepoDetailComponent } from './github/repo-detail/repo-detail.component';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { ContactComponent } from './contact/contact.component';
+import { BarChartView } from './canvasjs/barchartView.component';
+import { ContextGetter } from './canvasjs/contextGetter.directive';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -23,13 +26,16 @@ import { ContactComponent } from './contact/contact.component';
     RepoListComponent,
     RepoDetailComponent,
     HomeComponent,
-    ContactComponent
+    ContactComponent,
+	BarChartView,
+	ContextGetter
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+	ChartsModule,
     RouterModule.forRoot(rootRouterConfig, { useHash: true })
   ],
   providers: [

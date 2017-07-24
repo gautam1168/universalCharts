@@ -1,4 +1,5 @@
 import './polyfills.browser';
+//import '../node_modules/chart.js/src/chart';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
