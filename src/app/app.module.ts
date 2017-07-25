@@ -19,6 +19,7 @@ import { NvD3BarChartView } from './nvd3/nvd3BarChartView.component';
 import { ContextGetter } from './canvasjs/contextGetter.directive';
 import { ChartsModule } from 'ng2-charts';
 import { ElementGetter } from './nvd3/elemGetter.directive';
+import { CanvasjsBarChartView } from './chartjs/canvasjsBarChartView.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ElementGetter } from './nvd3/elemGetter.directive';
 	BarChartView,
 	ContextGetter,
 	NvD3BarChartView,
-	ElementGetter
+	ElementGetter,
+	CanvasjsBarChartView
   ],
   imports: [
     BrowserModule,

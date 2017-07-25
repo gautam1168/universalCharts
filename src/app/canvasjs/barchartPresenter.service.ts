@@ -95,6 +95,9 @@ export class BarChartPresenter {
 		if(this.viewType == "nvd3"){
 			options = this.setNvd3Options()
 		}
+		else if (this.viewType == "canvasjs"){
+			options = this.setCanvasJSOptions()
+		}
 		else{
 			options = this.options;
 		}
@@ -110,5 +113,25 @@ export class BarChartPresenter {
 			return {label: datapoint, value: datapoint}
 		})
 		return [config]
+	}
+
+	setCanvasJSOptions(){
+		let config = {
+			animationEnabled: true,
+			theme: "theme2",
+			//exportEnabled: true,
+			title:{
+				text: this.options.data.datasets[0].label
+			},
+			data: [
+				{
+					type: "column", //change type to bar, line, area, pie, etc
+					dataPoints: this.options.data.datasets[0].data.map((datapoint, i)=>{
+						return {x: i, y: datapoint}
+					})
+				}
+			]
+		}
+		return config;
 	}
 }

@@ -1,9 +1,9 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
-import { ContextGetter } from './contextGetter.directive';
-import { BarChartPresenter } from './barchartPresenter.service';
+import { ElementGetter } from '../nvd3/elemGetter.directive';
+import { BarChartPresenter } from '../canvasjs/barchartPresenter.service';
 
 @Component({
-	selector: 'bar-chart',
+	selector: 'canvasjs-bar-chart',
 	template: `<div style="display:block">
 				<ul>
 					<button class="button" (click)="presenter.setDefault()">default</button>
@@ -15,11 +15,11 @@ import { BarChartPresenter } from './barchartPresenter.service';
 					<div>{{status}}</div>
 				</ul>
 
-				<canvas contextGetter width="400" height="400">
-			    </canvas>
+				<div elementGetter id="canvasjschart">
+			    </div>
 			   </div>`,
 	styles: [
-		`canvas{
+		`#canvasjschart{
 			border: solid 2px;
 			width: 400px;
 			height: 400px;
@@ -28,11 +28,11 @@ import { BarChartPresenter } from './barchartPresenter.service';
 	],
 	providers: [ BarChartPresenter ]
 })
-export class BarChartView implements AfterViewInit{
-	@ViewChild(ContextGetter)
-	private cgetter: ContextGetter;
+export class CanvasjsBarChartView implements AfterViewInit{
+	@ViewChild(ElementGetter)
+	private egetter: ElementGetter;
 
-	private ctx:any;
+	private chartDomNode:any;
 	private chart:any;
 	public status:string;
 
@@ -43,15 +43,12 @@ export class BarChartView implements AfterViewInit{
 	}
 
 	ngAfterViewInit(){
-		this.ctx = this.cgetter.getContext();
-		this.presenter.init(this, "chartjs");
+		this.chartDomNode = this.egetter.getElement();
+		this.presenter.init(this, "canvasjs");
 	}
 
 	renderChart(options){
-		if (this.chart != undefined){
-			this.chart.destroy()
-		}
-
-		this.chart = new (<any>window).Chart(this.ctx, options);
+		this.chart = new (<any>window).CanvasJS.Chart(this.egetter.getElement(), options)
+		this.chart.render()
 	}
 }

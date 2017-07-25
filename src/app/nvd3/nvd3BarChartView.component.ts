@@ -2,7 +2,7 @@ import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { BarChartPresenter } from '../canvasjs/barchartPresenter.service';
 import { ElementGetter } from './elemGetter.directive';
 @Component({
-	selector: 'bar-chart',
+	selector: 'nvd3-bar-chart',
 	template: `<div style="display:block" id="chart1">
 				<ul>
 					<button class="button" (click)="presenter.setDefault()">default</button>
